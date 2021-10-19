@@ -1,0 +1,13 @@
+Zad.1.
+Napisać program, który pozwoli użytkownikowi wprowadzić z klawiatury dane wybranej przez niego na początku liczby studentów. Format wprowadzanych danych:
+imie nazwisko numer_indeksu
+Numer indeksu ma zawsze 6 cyfr.
+Jeżeli użytkownik wpisał imię lub nazwisko z małej litery, program zamienia je na duże.
+jan kowalski 123456 -> Jan Kowalski 123456
+
+Przed zakończeniem programu, należy zapisać dane do pliku studenci.txt, w takim samym formacie jak wyżej (tzn. w jednej linijce: imie nazwisko indeks).
+
+Zad.2.
+Pobrać plik "movies.txt". Napisać strukturę, której pola odpowiadają informacjom o filmach zawartym w tym pliku (tytuł i rok premiery). Wczytać te dane z pliku do programu i zainicjalizować 10 instancji obiektów wczytanymi wartościami.
+Do wczytania wartości liczbowej z napisu do zmiennej int można wykorzystać metodę stoi() (string to int), dokumentacja i przykład użycia:
+https://en.cppreference.com/w/cpp/string/basic_string/stol
