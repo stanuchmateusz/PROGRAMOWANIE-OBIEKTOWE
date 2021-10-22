@@ -1,0 +1,15 @@
+Zad.1. Napisz klasę rezeprezentującą liczbę zespoloną (zawiera dwa pola całkowite). Stwórz konstruktor domyślny, który pozwoli też na przekazanie argumentów przez użytkownika oraz konstruktor kopiujący. Klasa ma też zawierać metodę do wypisywania danej liczby (w formacie: "a ± bi"), jak również funkcje pozwalające dodać i odjąć dwie liczby zespolone.
+Logika dodawania i odejmowania liczb zespolonych:
+(a±bi) ± (c±di) = (a±c) ± (b±d)i
+(zob. też: przykład 1. ze strony https://www.matemaks.pl/proste-dzialania-na-liczbach-zespolonych.html)
+
+W funkcji main stworzyć kilka instancji napisanej klasy, wykorzystać każdy typ konstruktora, przetestować działanie funkcji dodających i odejmujących liczby zespolone.
+
+Dodawanie i odejmowanie napisać zarówno jako metodę należącą do klasy, jak i zewnętrzną funkcję poza klasą.
+Zastanowić się, jakie są konsekwencje napisania takiej operacji dodawania lub mnożenia za pomocą zewnętrznej funkcji, w porównaniu do metody, która jest częścią klasy.
+
+Zad.2. Napisz funkcję swap(), która pozwoli na zamianę wartościami dwóch obiektów klasy reprezentującej Ułamek, którą pisaliśmy na ostatnich zajęciach. Zamieniane obiekty funkcja musi otrzymać w odpowiedni sposób w argumentach.
+Przykład:
+Ulamek u1(1,2); Ulamek u2(3,4);
+swap(...); // wywolanie swap
+cout << u1.licznik << u1.mianownik << *(u1.dwartosc); // po zamianie wypisze 3 4 0.75
