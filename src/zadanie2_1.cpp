@@ -15,11 +15,11 @@
 class zespolona
 {
 private:
-    int a, b;
+    double a, b;
 
 public:
-    int getA() { return a; }
-    int getB() { return b; }
+    double getA() { return a; }
+    double getB() { return b; }
     void wypisz()
     {
         std::cout << a << ((b > 0) ? "+" : "") << b << "i" << std::endl;
@@ -32,7 +32,7 @@ public:
     {
         return new zespolona(a - druga.a, b - druga.b);
     };
-    zespolona(int rzeczywista, int zespolona)
+    zespolona(double rzeczywista, double zespolona)
     {
         a = rzeczywista;
         b = zespolona;
@@ -53,7 +53,7 @@ zespolona *odejmij(zespolona &pierwsza, zespolona &druga)
     return new zespolona(pierwsza.getA() - druga.getA(), pierwsza.getB() - druga.getB());
 };
 
-int main()
+double main()
 {
     zespolona z1(1, 3);
     zespolona z2(z1);
