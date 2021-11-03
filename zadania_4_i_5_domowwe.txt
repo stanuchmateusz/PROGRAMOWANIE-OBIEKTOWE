@@ -1,0 +1,29 @@
+1. Przeanalizuj przykłady kompozycji klas (klasa z polem, którego typem jest inna klasa).
+Jaki wniosek dotyczący listy inicjalizacyjnej wynika z porównania efektów działania dwóch programów?
+
+2. Napisz program zawierający następujące klasy:
+- klasa Point2D, przechowująca koordynaty w przestrzeni 2D
+- klasa Circle, przechowujaca środek koła w polu Point2D i długość promienia, posiada konstruktor kopiujący
+- funkcja zaprzyjaźniona z klasa Circle, obliczająca odległość między dwoma kołami 
+(tj. odległość między środkami pomniejszona o ich promienie).
+Klasy mają mieć pola prywatne i odpowiednie metody pozwalające na dostęp do tych pól (accessors)
+ oraz ich modyfikację (mutators) w razie potrzeby.
+
+3. Przy deklaracji wskaźnika na obiekt, możemy użyć modyfikatora const na kilka sposobów:
+const Circle * cptr
+Circle const * cptr
+Circle * const cptr
+const Circle * const
+Circle const * const cptr
+Przetestuj każdą z tych deklaracji w funkcji main i zanotuj, 
+jakie są konsekwencje poszczególnych zapisów. 
+Do przetestowania przyda się dopisanie metody, która pozwala w jakiś sposób zmienić obiekt Circle (np. change_radius).
+
+4. Uruchom i przeanalizuj program z przykładem polimorfizmu (2. wykład, str. 36-38).
+
+5. Napisz podobny program, realizujący polimorfizm:
+klasa Osoba (jedno pole z nazwiskiem),
+klasa Pracownik (zawiera nazwisko i ID)
+i klasa Student (nazwisko, rok rozpoczecia studiow, srednia ocen).
+Wszystkie klasy posiadaja metode print() wypisujaca informacje przechowywane w danym obiekcie.
+W funkcji main() utwórz po jednym obiekcie tych klas i za pomocą jednego wskaźnika wywołaj metodę print() każdego z nich.
