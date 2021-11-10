@@ -46,5 +46,11 @@ int main()
     Circle maszrum(p1, 5);
     std::cout << distance(grzyb, maszrum) << std::endl;
 
+    // const Circle * cptr;
+    // Circle const * cptr;
+    // Circle * const cptr;
+    // const Circle * const;
+    // Circle const * const cptr;
+
     return 0;
 }
