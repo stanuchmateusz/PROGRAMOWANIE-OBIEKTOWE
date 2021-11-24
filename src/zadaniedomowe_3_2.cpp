@@ -6,53 +6,48 @@
 
 class Wielokat
 {
-private:
-	int a; //podstawa
+
 public:
-	Wielokat(int podstawa) : a(podstawa){};
+	Wielokat(){};
 	~Wielokat(){};
-	int getA() { return a; };
-	virtual void oblicz_pole() {}
+	virtual double oblicz_pole() {}
 };
 class Trojkat : public Wielokat
 {
 private:
-	int h; //wysokosc
+	double a, h;
+
 public:
-	Trojkat(int podstawa, int wysokosc) : Wielokat(podstawa), h(wysokosc){};
+	Trojkat(double podstawa, double wysokosc) : a(podstawa), h(wysokosc){};
 	~Trojkat(){};
-	void oblicz_pole()
+	double oblicz_pole()
 	{
-		std::cout << "Pole wynosi: " << Wielokat::getA() * h << std::endl;
+		return a * h;
 	}
 };
 class Prostakat : public Wielokat
 {
 private:
-	int h; //wysokosc
+	double a, b;
+
 public:
-	Prostakat(int podstawa, int wysokosc) : Wielokat(podstawa), h(wysokosc){};
+	Prostakat(double podstawa, double wysokosc) : a(podstawa), b(wysokosc){};
 	~Prostakat(){};
-	void print()
+	double oblicz_pole()
 	{
-		std::cout << "a = " << Wielokat::getA() << std::endl
-				  << "b = " << h << std::endl;
-	}
-	void oblicz_pole()
-	{
-		std::cout << "Pole wynosi: " << Wielokat::getA() * h << std::endl;
+		return a * b;
 	}
 };
 
 class Kwadrat : public Prostakat
 {
 public:
-	Kwadrat(int a) : Prostakat(a, a) {}
+	Kwadrat(double a) : Prostakat(a, a) {}
 	~Kwadrat() {}
 };
 
-int main()
+double main()
 {
 	Kwadrat k(4);
-	k.oblicz_pole();
+	std::cout << k.oblicz_pole() << std::endl;
 }
