@@ -4,94 +4,46 @@
 #include <iostream>
 #include <math.h>
 
-class Wielokont
+class Wielokat
 {
 private:
 	int a; //podstawa
 public:
-	Wielokont(int podstawa) : a(podstawa){};
-	~Wielokont(){};
+	Wielokat(int podstawa) : a(podstawa){};
+	~Wielokat(){};
 	int getA() { return a; };
-	virtual void print()
-	{
-		std::cout << "podstawa = " << a << std::endl;
-	}
 	virtual void oblicz_pole() {}
 };
-class Trojkat : public Wielokont
-{
-private:
-	int b, c; //boki trójkąta
-	int h;	  //wysokosc
-public:
-	Trojkat(int podstawa, int bok1, int bok2) : Wielokont(podstawa), b(bok1), c(bok2) { h = 0; };
-	Trojkat(int podstawa, int wysokosc) : Wielokont(podstawa), h(wysokosc){};
-	~Trojkat(){};
-	void print()
-	{
-		Wielokont::print();
-		if (h > 0)
-		{
-			std::cout << "wysokosc = " << h << std::endl;
-		}
-		else
-		{
-			std::cout << "bok 1 = " << b << std::endl;
-			std::cout << "bok 2 = " << c << std::endl;
-		}
-	}
-	void oblicz_pole()
-	{
-		std::cout << "Pole trojkata" << std::endl;
-		print();
-		if (h > 0)
-		{
-			std::cout << "wynosi: " << (Wielokont::getA() * h) / 2 << std::endl;
-		}
-		else
-		{
-			int p = (Wielokont::getA() + b + c) / 2;
-			std::cout << "wynosi: " << sqrt(p * (p - Wielokont::getA()) * (p - b) * (p - c)) << std::endl;
-		}
-	}
-};
-class Prostakat : public Wielokont
+class Trojkat : public Wielokat
 {
 private:
 	int h; //wysokosc
 public:
-	Prostakat(int podstawa, int wysokosc) : Wielokont(podstawa), h(wysokosc){};
+	Trojkat(int podstawa, int wysokosc) : Wielokat(podstawa), h(wysokosc){};
+	~Trojkat(){};
+	void oblicz_pole()
+	{
+		std::cout << "Pole wynosi: " << Wielokat::getA() * h << std::endl;
+	}
+};
+class Prostakat : public Wielokat
+{
+private:
+	int h; //wysokosc
+public:
+	Prostakat(int podstawa, int wysokosc) : Wielokat(podstawa), h(wysokosc){};
 	~Prostakat(){};
 	void print()
 	{
-		std::cout << "a = " << Wielokont::getA() << std::endl
+		std::cout << "a = " << Wielokat::getA() << std::endl
 				  << "b = " << h << std::endl;
 	}
 	void oblicz_pole()
 	{
-		std::cout << "Pole prostokata o bokach:" << std::endl;
-		print();
-		std::cout << "wynosi: " << Wielokont::getA() * h << std::endl;
+		std::cout << "Pole wynosi: " << Wielokat::getA() * h << std::endl;
 	}
 };
-// class Kwadrat : public Wielokont
-// {
-// private:
-// 	/* data */
-// public:
-// 	Kwadrat(int a) : Wielokont(a){};
-// 	~Kwadrat(){};
-// 	void print()
-// 	{
-// 		std::cout << "a=" << Wielokont::getA() << std::endl;
-// 	}
-// 	void oblicz_pole()
-// 	{
-// 		std::cout << "Pole prostokata o bokach:" << std::endl;
-// 		print();
-// 		std::cout << "wynosi: " << Wielokont::getA() * Wielokont::getA() << std::endl;
-// 	}
-// };
+
 class Kwadrat : public Prostakat
 {
 public:
