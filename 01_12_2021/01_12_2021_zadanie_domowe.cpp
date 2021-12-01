@@ -1,0 +1,71 @@
+// Wybierz i umieść w programie dwie dowolne z dotychczas napisanych konkretnych klas,
+//  które nie są powiązane ze sobą relacją dziedziczenia (np. klasa Koło i Pracownik, Prostokat i Ulamek itd.)
+// Stwórz klasę abstrakcyjną, która będzie umożliwiała stworzenie interfejsu służącego do zapisywania dowolnej klasy do pliku tekstowego.
+//  Klasa ma jedną metodę, która realizuje zapis do pliku przekazanego w jej argumencie.
+// Zmień dwie pierwotne klasy tak, by dziedziczyły z tej klasy abstrakcyjnej.
+// Przetestuj w programie zapis do jednego pliku tekstowego wielu obiektów z różnych klas
+// , np. w pętli (analogicznie do zadania z sumowaniem pól wielokątów).
+#include <iostream>
+#include <fstream>
+
+class Zapisywanie
+{
+public:
+    Zapisywanie() {}
+    virtual ~Zapisywanie() {}
+    virtual void zapisz_do_pliku(std::ofstream &plik_do_zapisu) = 0;
+};
+
+class Fraction : public Zapisywanie
+{
+private:
+    int nominator;
+    int denominator;
+    double *dvalue;
+
+public:
+    int getNominator() { return nominator; }
+    int getDenominator() { return denominator; }
+
+    Fraction(int n, int d) : nominator(n), denominator(d)
+    {
+        double dou = (double)n / d;
+        dvalue = new double(dou);
+    };
+    ~Fraction() { delete dvalue; }
+    void print()
+    {
+        std::cout << "Ulamek " << nominator << "/" << denominator << " (" << *dvalue << ")\n";
+    }
+    void zapisz_do_pliku(std::ofstream &plik_do_zapisu)
+    {
+        plik_do_zapisu << "Ulamek " << nominator << "/" << denominator << " (" << *dvalue << ")\n";
+    };
+};
+
+class Trojkat : public Zapisywanie
+{
+private:
+    double a, h;
+
+public:
+    Trojkat(double podstawa, double wysokosc) : a(podstawa), h(wysokosc){};
+    ~Trojkat(){};
+    double oblicz_pole()
+    {
+        return 0.5 * a * h;
+    }
+};
+
+int main()
+{
+    std::ofstream plik;
+    plik.open("out_klasy.txt");
+    if (!plik.is_open())
+        return -1;
+    Fraction x(1, 2);
+    x.zapisz_do_pliku(plik);
+
+    plik.close();
+    return 0;
+}
