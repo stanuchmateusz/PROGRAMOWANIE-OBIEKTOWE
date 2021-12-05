@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 
-class Zapisywanie
+class Zapisywanie // klasa abstrakcyjna
 {
 public:
     Zapisywanie() {}
@@ -16,17 +16,13 @@ public:
     virtual void zapisz_do_pliku(std::ofstream &plik_do_zapisu) = 0;
 };
 
-class Fraction : public Zapisywanie
+class Fraction : public Zapisywanie // klasa ułamek
 {
 private:
-    int nominator;
-    int denominator;
+    int nominator, denominator;
     double *dvalue;
 
 public:
-    int getNominator() { return nominator; }
-    int getDenominator() { return denominator; }
-
     Fraction(int n, int d) : nominator(n), denominator(d)
     {
         double dou = (double)n / d;
@@ -39,11 +35,11 @@ public:
     }
     void zapisz_do_pliku(std::ofstream &plik_do_zapisu)
     {
-        plik_do_zapisu << "Ulamek " << nominator << "/" << denominator << " (" << *dvalue << ")\n";
+        plik_do_zapisu << "Ułamek " << nominator << "/" << denominator << " (" << *dvalue << ")\n";
     };
 };
 
-class Trojkat : public Zapisywanie
+class Trojkat : public Zapisywanie // klasa trójkąt
 {
 private:
     double a, h;
@@ -55,16 +51,31 @@ public:
     {
         return 0.5 * a * h;
     }
+    void zapisz_do_pliku(std::ofstream &plik_do_zapisu)
+    {
+        plik_do_zapisu << "Trójkąt a = " << a << ", h = " << h << " | Pole = " << 0.5 * a * h << "\n";
+    };
 };
 
 int main()
 {
     std::ofstream plik;
     plik.open("out_klasy.txt");
+
     if (!plik.is_open())
         return -1;
-    Fraction x(1, 2);
-    x.zapisz_do_pliku(plik);
+
+    Zapisywanie *klasy_do_wypisania[4];
+    klasy_do_wypisania[0] = new Fraction(13, 37);
+    klasy_do_wypisania[1] = new Trojkat(6, 9);
+    klasy_do_wypisania[2] = new Fraction(4, 20);
+    klasy_do_wypisania[3] = new Trojkat(21, 37);
+
+    for (auto &&i : klasy_do_wypisania)
+        i->zapisz_do_pliku(plik);
+
+    for (auto &&i : klasy_do_wypisania)
+        delete i;
 
     plik.close();
     return 0;
