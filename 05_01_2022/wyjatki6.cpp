@@ -3,9 +3,11 @@
 
 int main()
 {
+    int size;
+    std::cin >> size;
     try
     {
-        int *w = new int[1000000000000];
+        int *w = new int[size];
         std::cout << "Zaalokowano 1000000000000 komorek do"
                   << "przechowania liczb calkowitych" << std::endl;
     }

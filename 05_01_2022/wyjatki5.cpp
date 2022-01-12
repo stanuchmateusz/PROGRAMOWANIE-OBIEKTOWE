@@ -29,11 +29,11 @@ int main()
         std::cout << "Srednia harmoniczna liczb: " << x << " oraz "
                   << y << " wynosi: " << sredHarm << std::endl;
     }
-    catch (DzieleniePrzezZero & wyjatek)
+    catch (DzieleniePrzezZero &wyjatek)
     {
         wyjatek.wypisz();
     }
-    catch (BledneDzialanie & wyjatek)
+    catch (BledneDzialanie &wyjatek)
     {
         wyjatek.wypisz();
     }
