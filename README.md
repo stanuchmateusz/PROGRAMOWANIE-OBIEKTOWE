@@ -1,3 +1,2 @@
 # PROGRAMOWANIE-OBIEKTOWE
-Kradnijcie ile chcecie
-miłego dnia i smaczen kawusi
+zajęcia na rok 2021/2022 Semestr 3
