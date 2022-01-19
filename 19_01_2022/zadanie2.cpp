@@ -131,7 +131,10 @@ void zrob(std::string a, std::vector<std::string> b)
                 }
             }
             if (!mozna)
+            {
+                std::cout << "Nie mozna ulozyc slowa: " << slowo << std::endl;
                 break;
+            }
 
             std::cout << "Mozna ulozyc slowo: " << slowo << std::endl;
 
