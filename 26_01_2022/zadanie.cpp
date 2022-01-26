@@ -10,7 +10,7 @@ public:
     ValueExeption(std::string msg = "") : message(msg) {}
     const char *what() const noexcept
     {
-        std::string msg = "Podano błędna wartosc ";
+        std::string msg = "Podano błędna wartosc, ";
         return msg.append(message).c_str();
     }
 };
@@ -87,7 +87,16 @@ public:
     virtual void jedz(unsigned short km){};
 
     ~PojazdSilnikowy(){};
+
+    friend void operator<<(std::ostream &os, PojazdSilnikowy &p);
 };
+void operator<<(std::ostream &os, PojazdSilnikowy &p)
+{
+    os << "Marka: " << p._marka << std::endl;
+    os << "Model: " << p._model << std::endl;
+    os << "Rocznik: " << p._rocznik << std::endl;
+    os << "Przebieg: " << p._przebieg << std::endl;
+}
 
 class Samochod : public PojazdSilnikowy
 {
@@ -97,6 +106,12 @@ private:
     float _spalanie;       // na km
 
 public:
+    /**
+     * @brief Samochod
+     * @param marka - nazwa marki | std::string
+     * @param model - nazwa modelu |
+     * @param rok_produkcji - rok produkcji
+     **/
     Samochod(
         std::string marka,
         std::string model,
@@ -151,22 +166,16 @@ public:
         float maksymalny_zasieg) : _poziom_naladowania(0),
                                    _maksymalny_zasieg(maksymalny_zasieg),
                                    PojazdSilnikowy(marka, model, rok_produkcji)
+
     {
         ilosc_pojazdow++;
     };
-    ~SamochodElektryczny()
+
+    ~SamochodElektryczny() { ilosc_pojazdow--; };
+    void doladuj()
     {
-        ilosc_pojazdow--;
-    };
-    void doladuj(float ladowanie)
-    {
-        if (_poziom_naladowania + ladowanie > _maksymalny_zasieg)
-            throw ValueExeption("Przekroczono maksymalny zasięg");
-        else
-        {
-            _poziom_naladowania += ladowanie;
-            std::cout << "Załadowano " << ladowanie << " km" << std::endl;
-        }
+        _poziom_naladowania = _maksymalny_zasieg;
+        std::cout << "W pełni załadowano akumlatory " << std::endl;
     };
     void jedz(unsigned short km)
     {
@@ -197,10 +206,11 @@ int main(int argc, char const *argv[])
     SetConsoleOutputCP(CP_UTF8); // ustawienie kodowania
     try
     {
-        Samochod samochod("Ford", "Focus", 2019, 5, 50);
-        samochod.tankuj(10);
+        Samochod samochod("Ford", "Focus", 2019, 0.7, 50);
+        samochod.tankuj(50);
+        std::cout << samochod;
         samochod.uruchom();
-        samochod.jedz(20);
+        samochod.jedz(2000);
     }
     catch (ValueExeption &e)
     {
@@ -210,9 +220,10 @@ int main(int argc, char const *argv[])
     try
     {
         SamochodElektryczny samochod_elektryczny("Tesla", "Model S", 2019, 100);
-        samochod_elektryczny.doladuj(50);
+        samochod_elektryczny.doladuj();
         samochod_elektryczny.uruchom();
-        samochod_elektryczny.jedz(20);
+
+        samochod_elektryczny.jedz(2000);
         SamochodElektryczny samochod_elektryczny2("BMW", "F2", 2021, 403);
         samochod_elektryczny.wyswietl_ilosc_pojazdow();
     }
