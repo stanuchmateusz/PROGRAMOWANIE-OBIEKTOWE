@@ -15,7 +15,7 @@ public:
     void uruchom()
     {
         if (_czy_dziala)
-            std::cout << "Silnik juz działa" << std::endl;
+            throw std::bad_exception("Silnik juz dziala");
         else
         {
             _czy_dziala = true;
@@ -30,7 +30,7 @@ public:
             std::cout << "Silnik został wyłączony" << std::endl;
         }
         else
-            std::cout << "Silnik juz jest wyłączony" << std::endl;
+            throw std::bad_exception("Silnik juz dziala");
     }
     void zmien_bieg(char bieg)
     {
@@ -230,7 +230,7 @@ int main(int argc, char const *argv[])
             p->zgas();
             std::cout << *p;
         }
-        catch (std::invalid_argument &e)
+        catch (std::exception &e)
         {
             std::cout << e.what() << std::endl;
         }
@@ -253,7 +253,7 @@ int main(int argc, char const *argv[])
             p->zgas();
             std::cout << *p;
         }
-        catch (std::invalid_argument &e)
+        catch (std::exception &e)
         {
             std::cout << e.what() << std::endl;
         }
