@@ -1,24 +1,6 @@
 #include <iostream>
+#include <vector>
 #include <Windows.h>
-
-class ValueExeption : public std::exception
-{
-private:
-    std::string message;
-
-public:
-    ValueExeption(std::string msg = "") : message(msg) {}
-    const char *what() const noexcept
-    {
-        std::string msg = "Podano błędna wartosc, ";
-        return msg.append(message).c_str();
-    }
-};
-class EngineExeption : public ValueExeption
-{
-public:
-    EngineExeption() : ValueExeption("Silnik jest wyłączony") {}
-};
 
 class Silnik
 {
@@ -60,10 +42,10 @@ public:
                 std::cout << "Bieg zmieniony na " << _bieg << std::endl;
             }
             else
-                std::cout << "Błędny bieg" << std::endl;
+                throw std::invalid_argument("Błędny bieg");
         }
         else
-            std::cout << "Silnik wyłączony" << std::endl;
+            throw std::invalid_argument("Silnik wyłączony");
     }
 };
 
@@ -83,6 +65,12 @@ public:
                                               _model(model),
                                               _rocznik(rocznik),
                                               _przebieg(0){};
+    PojazdSilnikowy(const PojazdSilnikowy &p) : _marka(p._marka),
+                                                _model(p._model),
+                                                _rocznik(p._rocznik),
+                                                _przebieg(p._przebieg),
+                                                _silnik(p._silnik){};
+
     void set_przebieg(unsigned int przebieg) { _przebieg += przebieg; };
     virtual void jedz(unsigned short km){};
 
@@ -92,10 +80,12 @@ public:
 };
 void operator<<(std::ostream &os, PojazdSilnikowy &p)
 {
+    os << "*****************************************" << std::endl;
     os << "Marka: " << p._marka << std::endl;
     os << "Model: " << p._model << std::endl;
-    os << "Rocznik: " << p._rocznik << std::endl;
-    os << "Przebieg: " << p._przebieg << std::endl;
+    os << "Rocznik: " << p._rocznik << " r." << std::endl;
+    os << "Przebieg: " << p._przebieg << " km" << std::endl;
+    os << "*****************************************" << std::endl;
 }
 
 class Samochod : public PojazdSilnikowy
@@ -121,10 +111,15 @@ public:
                                 _pojemnosc_baku(pojemnosc_baku),
                                 _poziom_paliwa(0),
                                 PojazdSilnikowy(marka, model, rok_produkcji){};
+    Samochod(const Samochod &s) : _spalanie(s._spalanie),
+                                  _pojemnosc_baku(s._pojemnosc_baku),
+                                  _poziom_paliwa(s._poziom_paliwa),
+                                  PojazdSilnikowy(s){};
+
     void tankuj(float litry)
     {
         if (_poziom_paliwa + litry > _pojemnosc_baku)
-            throw ValueExeption("Przekroczono pojemnosc baku");
+            throw std::invalid_argument("Przekroczono pojemnosc baku");
         else
         {
             _poziom_paliwa += litry;
@@ -136,7 +131,7 @@ public:
         if (this->get_czy_dziala())
         {
             if (_poziom_paliwa - km * _spalanie < 0)
-                throw ValueExeption("Nie wystarczy paliwa");
+                throw std::invalid_argument("Nie wystarczy paliwa");
             else
             {
                 _poziom_paliwa -= km * _spalanie;
@@ -145,7 +140,7 @@ public:
             }
         }
         else
-            throw EngineExeption();
+            throw std::invalid_argument("Silnik wyłączony");
     }
 
     ~Samochod(){};
@@ -159,6 +154,13 @@ private:
     static unsigned int ilosc_pojazdow;
 
 public:
+    /**
+     * @brief SamochodElektryczny
+     * @param marka - nazwa marki | std::string
+     * @param model - nazwa modelu | std::string
+     * @param rok_produkcji - rok produkcji | unsigned short
+     * @param maksymalny_zasieg - maksymalny zasieg | float
+     * */
     SamochodElektryczny(
         std::string marka,
         std::string model,
@@ -166,10 +168,12 @@ public:
         float maksymalny_zasieg) : _poziom_naladowania(0),
                                    _maksymalny_zasieg(maksymalny_zasieg),
                                    PojazdSilnikowy(marka, model, rok_produkcji)
-
     {
         ilosc_pojazdow++;
     };
+    SamochodElektryczny(const SamochodElektryczny &s) : _poziom_naladowania(s._poziom_naladowania),
+                                                        _maksymalny_zasieg(s._maksymalny_zasieg),
+                                                        PojazdSilnikowy(s){};
 
     ~SamochodElektryczny() { ilosc_pojazdow--; };
     void doladuj()
@@ -182,7 +186,7 @@ public:
         if (this->get_czy_dziala())
         {
             if (_poziom_naladowania - km < 0)
-                throw ValueExeption("Za mało energii");
+                throw std::invalid_argument("Za malo energii");
             else
             {
                 _poziom_naladowania -= km;
@@ -191,7 +195,7 @@ public:
             }
         }
         else
-            throw EngineExeption();
+            throw std::invalid_argument("Silnik wyłączony");
     }
     void wyswietl_ilosc_pojazdow()
     {
@@ -204,32 +208,61 @@ unsigned int SamochodElektryczny::ilosc_pojazdow = 0;
 int main(int argc, char const *argv[])
 {
     SetConsoleOutputCP(CP_UTF8); // ustawienie kodowania
-    try
+    std::vector<Samochod *> pojazdy1;
+    pojazdy1.push_back(new Samochod("Ford", "Focus", 2010, 0.5, 50));
+    pojazdy1.push_back(new Samochod("Opel", "Astra", 2017, 0.72, 60));
+    pojazdy1.push_back(new Samochod("BMW", "e46", 2006, 0.43, 70));
+    std::vector<SamochodElektryczny *> pojazdy2;
+    pojazdy2.push_back(new SamochodElektryczny("Tesla", "Model S", 2018, 300));
+    pojazdy2.push_back(new SamochodElektryczny("Tesla", "Model 3", 2019, 200));
+    pojazdy2.push_back(new SamochodElektryczny("Tesla", "Model X", 2020, 420));
+
+    for (auto &p : pojazdy1)
     {
-        Samochod samochod("Ford", "Focus", 2019, 0.7, 50);
-        samochod.tankuj(50);
-        std::cout << samochod;
-        samochod.uruchom();
-        samochod.jedz(2000);
+        try
+        {
+            std::cout << *p;
+            p->tankuj(60);
+            p->uruchom();
+            p->zmien_bieg('1');
+            p->jedz(340);
+            p->zmien_bieg('N');
+            p->zgas();
+            std::cout << *p;
+        }
+        catch (std::invalid_argument &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     }
-    catch (ValueExeption &e)
+    std::cout << "*****************************************" << std::endl;
+
+    pojazdy2[0]->wyswietl_ilosc_pojazdow();
+    std::cout << "*****************************************" << std::endl;
+
+    for (auto &p : pojazdy2)
     {
-        std::cout << e.what() << std::endl;
+        try
+        {
+            std::cout << *p;
+            p->doladuj();
+            p->uruchom();
+            p->zmien_bieg('1');
+            p->jedz(240);
+            p->zmien_bieg('N');
+            p->zgas();
+            std::cout << *p;
+        }
+        catch (std::invalid_argument &e)
+        {
+            std::cout << e.what() << std::endl;
+        }
     }
 
-    try
+    for (auto &p : pojazdy1)
     {
-        SamochodElektryczny samochod_elektryczny("Tesla", "Model S", 2019, 100);
-        samochod_elektryczny.doladuj();
-        samochod_elektryczny.uruchom();
+        delete p;
+    }
 
-        samochod_elektryczny.jedz(2000);
-        SamochodElektryczny samochod_elektryczny2("BMW", "F2", 2021, 403);
-        samochod_elektryczny.wyswietl_ilosc_pojazdow();
-    }
-    catch (ValueExeption &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
     return 0;
 }
