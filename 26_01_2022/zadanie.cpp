@@ -15,7 +15,7 @@ public:
     void uruchom()
     {
         if (_czy_dziala)
-            throw std::bad_exception("Silnik juz dziala");
+            throw std::runtime_error("Silnik juz dziala");
         else
         {
             _czy_dziala = true;
@@ -30,7 +30,7 @@ public:
             std::cout << "Silnik został wyłączony" << std::endl;
         }
         else
-            throw std::bad_exception("Silnik juz dziala");
+            throw std::runtime_error("Silnik juz dziala");
     }
     void zmien_bieg(char bieg)
     {
